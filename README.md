@@ -126,6 +126,48 @@ The application is designed for high performance and scalability:
 - Processes SQS messages in batches for improved throughput
 - Uses DynamoDB for scalable and low-latency storage
 - Includes configurable thread pool settings for optimal performance
+- Supports both JPA and native SQL queries for database operations
+
+### JPA vs. Native SQL Queries
+
+The application provides options for using either JPA or native SQL queries when fetching unprocessed transactions:
+
+```properties
+# Query Configuration
+# Set to true to use native SQL queries for potentially better performance with large datasets
+# Set to false to use standard JPA queries (default)
+app.use-native-query=false
+```
+
+#### Performance Comparison:
+
+1. **JPA Queries (Default)**:
+   - Advantages:
+     - Type-safe and easier to maintain
+     - Portable across different database systems
+     - Handles entity relationships automatically
+     - Good performance for small to medium datasets
+   - Disadvantages:
+     - May have overhead for complex queries or large datasets
+     - Less control over the exact SQL being executed
+
+2. **Native SQL Queries**:
+   - Advantages:
+     - Can be significantly faster for large datasets
+     - Allows database-specific optimizations
+     - Full control over the exact SQL being executed
+     - Can leverage database-specific features and optimizations
+   - Disadvantages:
+     - Not type-safe
+     - Less portable across different database systems
+     - Requires more maintenance when entity structure changes
+
+#### Recommendations:
+
+- For small to medium datasets (up to thousands of records), JPA queries are generally sufficient and provide better maintainability.
+- For large datasets (tens of thousands or more), consider enabling native SQL queries for better performance.
+- If your application processes a high volume of transactions, benchmark both approaches in your specific environment to determine the optimal configuration.
+- Monitor database performance and adjust the configuration as needed based on your specific workload.
 
 ## License
 
